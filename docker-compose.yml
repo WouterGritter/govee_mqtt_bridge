@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  govee-mqtt-bridge:
+    build: '.'
+    network_mode: host  # Needed for bluetooth
+    privileged: true  # Needed for bluetooth
+    restart: unless-stopped
+    environment:
+      MQTT_BROKER_ADDRESS: ${MQTT_BROKER_ADDRESS:-localhost}
+      MQTT_BROKER_PORT: ${MQTT_BROKER_PORT:-1883}
