@@ -17,7 +17,6 @@ mqttc: Optional[mqtt.Client] = None
 @dataclass
 class GoveeData:
     address: str
-    name: str
     temperature: float
     humidity: float
     battery: float
@@ -37,7 +36,6 @@ def decode_govee_data(advertisement):
 
         return GoveeData(
             address=address,
-            name=name,
             temperature=float(values / 10000),
             humidity=float((values % 1000) / 10),
             battery=mfg_data[6] / 100,
@@ -53,7 +51,6 @@ def decode_govee_data(advertisement):
 
 
 def publish_govee_data(govee_data: GoveeData):
-    mqttc.publish(generate_topic(govee_data.address, 'name'), govee_data.name, qos=MQTT_QOS, retain=MQTT_RETAIN)
     mqttc.publish(generate_topic(govee_data.address, 'temperature'), govee_data.temperature, qos=MQTT_QOS, retain=MQTT_RETAIN)
     mqttc.publish(generate_topic(govee_data.address, 'humidity'), govee_data.humidity, qos=MQTT_QOS, retain=MQTT_RETAIN)
     mqttc.publish(generate_topic(govee_data.address, 'battery'), govee_data.battery, qos=MQTT_QOS, retain=MQTT_RETAIN)
