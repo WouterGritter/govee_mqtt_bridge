@@ -40,12 +40,15 @@ def decode_govee_data(advertisement):
             humidity=float((values % 1000) / 10),
             battery=mfg_data[6] / 100,
         )
+    elif name.startswith('GVH5104'):
+        values = int.from_bytes(mfg_data[4:7], 'big')
 
-    # Other models might use this format:
-    # values = int.from_bytes(mfg_data[4:7], 'big')
-    # temp = float(values / 10000)
-    # hum = float((values % 1000) / 10)
-    # bat = mfg_data[7]
+        return GoveeData(
+            address=address,
+            temperature=float(values / 10000),
+            humidity=float((values % 1000) / 10),
+            battery=mfg_data[7] / 100,
+        )
 
     return None
 
