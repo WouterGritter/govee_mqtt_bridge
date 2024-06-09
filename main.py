@@ -79,6 +79,7 @@ def main():
     print(f'{MQTT_TOPIC_FORMAT=}')
     print(f'{MQTT_QOS=}')
     print(f'{MQTT_RETAIN=}')
+    print(f'{MAC_NAMES}')
 
     mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     mqttc.connect(MQTT_BROKER_ADDRESS, MQTT_BROKER_PORT, 60)
