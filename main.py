@@ -7,9 +7,10 @@ import paho.mqtt.client as mqtt
 
 MQTT_BROKER_ADDRESS = os.getenv('MQTT_BROKER_ADDRESS', 'localhost')
 MQTT_BROKER_PORT = int(os.getenv('MQTT_BROKER_PORT', '1883'))
-MQTT_TOPIC_FORMAT = os.getenv('MQTT_TOPIC_PREFIX', 'govee/{address}/{attribute}')
+MQTT_TOPIC_FORMAT = os.getenv('MQTT_TOPIC_PREFIX', 'govee/{device}/{attribute}')
 MQTT_QOS = int(os.getenv('MQTT_QOS', '0'))
 MQTT_RETAIN = os.getenv('MQTT_RETAIN', 'true') == 'true'
+MAC_NAMES = dict(e.split('=') for e in os.getenv('MAC_NAMES', '').split(";") if e)
 
 mqttc: Optional[mqtt.Client] = None
 
@@ -54,13 +55,14 @@ def decode_govee_data(advertisement):
 
 
 def publish_govee_data(govee_data: GoveeData):
-    mqttc.publish(generate_topic(govee_data.address, 'temperature'), govee_data.temperature, qos=MQTT_QOS, retain=MQTT_RETAIN)
-    mqttc.publish(generate_topic(govee_data.address, 'humidity'), govee_data.humidity, qos=MQTT_QOS, retain=MQTT_RETAIN)
-    mqttc.publish(generate_topic(govee_data.address, 'battery'), govee_data.battery, qos=MQTT_QOS, retain=MQTT_RETAIN)
+    device_name = MAC_NAMES.get(govee_data.address, govee_data.address)
+    mqttc.publish(generate_topic(device_name, 'temperature'), govee_data.temperature, qos=MQTT_QOS, retain=MQTT_RETAIN)
+    mqttc.publish(generate_topic(device_name, 'humidity'), govee_data.humidity, qos=MQTT_QOS, retain=MQTT_RETAIN)
+    mqttc.publish(generate_topic(device_name, 'battery'), govee_data.battery, qos=MQTT_QOS, retain=MQTT_RETAIN)
 
 
-def generate_topic(address, attribute):
-    return MQTT_TOPIC_FORMAT.replace('{address}', address).replace('{attribute}', attribute)
+def generate_topic(device_name: str, attribute: str) -> str:
+    return MQTT_TOPIC_FORMAT.replace('{device}', device_name).replace('{attribute}', attribute)
 
 
 def on_bluetooth_advertisement(advertisement):
