@@ -10,6 +10,6 @@ services:
       MQTT_BROKER_ADDRESS: ${MQTT_BROKER_ADDRESS:-localhost}
       MQTT_BROKER_PORT: ${MQTT_BROKER_PORT:-1883}
       MAC_NAMES: ${MAC_NAMES}
-      MQTT_TOPIC_PREFIX: 'govee/{device}/{attribute}'
+      MQTT_TOPIC_FORMAT: 'govee/{device}/{attribute}'
       MQTT_QOS: '0'
       MQTT_RETAIN: 'true'

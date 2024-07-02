@@ -7,10 +7,10 @@ import paho.mqtt.client as mqtt
 
 MQTT_BROKER_ADDRESS = os.getenv('MQTT_BROKER_ADDRESS', 'localhost')
 MQTT_BROKER_PORT = int(os.getenv('MQTT_BROKER_PORT', '1883'))
-MQTT_TOPIC_FORMAT = os.getenv('MQTT_TOPIC_PREFIX', 'govee/{device}/{attribute}')
+MQTT_TOPIC_FORMAT = os.getenv('MQTT_TOPIC_FORMAT', 'govee/{device}/{attribute}')
 MQTT_QOS = int(os.getenv('MQTT_QOS', '0'))
 MQTT_RETAIN = os.getenv('MQTT_RETAIN', 'true') == 'true'
-MAC_NAMES = dict(e.split('=') for e in os.getenv('MAC_NAMES', '').split(";") if e)
+MAC_NAMES = dict(e.split('=') for e in os.getenv('MAC_NAMES', '').split(';') if e)
 
 mqttc: Optional[mqtt.Client] = None
 
