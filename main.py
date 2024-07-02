@@ -58,7 +58,6 @@ def publish_govee_data(govee_data: GoveeData):
     device_name = MAC_NAMES.get(govee_data.address, govee_data.address)
     mqttc.publish(generate_topic(device_name, 'temperature'), govee_data.temperature, qos=MQTT_QOS, retain=MQTT_RETAIN)
     mqttc.publish(generate_topic(device_name, 'humidity'), govee_data.humidity, qos=MQTT_QOS, retain=MQTT_RETAIN)
-    mqttc.publish(generate_topic(device_name, 'battery'), govee_data.battery, qos=MQTT_QOS, retain=MQTT_RETAIN)
 
 
 def generate_topic(device_name: str, attribute: str) -> str:
