@@ -1,2 +1,2 @@
-bleson~=0.1.8
+git+https://github.com/WouterGritter/python-bleson.git
 paho-mqtt~=2.1.0
